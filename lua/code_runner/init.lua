@@ -17,14 +17,6 @@ end
 
 local M = {}
 
-M.open_filetype_suported = function()
-  open_json(o.get().filetype_path)
-end
-
-M.open_project_manager = function()
-  open_json(o.get().project_path)
-end
-
 M.setup = function(user_options)
   setup(user_options or {})
 
