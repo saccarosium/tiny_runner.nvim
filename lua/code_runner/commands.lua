@@ -1,38 +1,6 @@
 local o = require("code_runner.options")
 local pattern = "crunner_"
 
--- Replace variables with full paths
----@param command string command to run the path
----@param path string absolute path
----@param user_argument table?
----@return string?
-local function replaceVars(command, path, user_argument)
-  if type(command) == "function" then
-    local cmd = command(user_argument)
-    if type(cmd) == "string" then
-      command = cmd
-    else
-      return
-    end
-  end
-
-  -- command is of type string
-
-  local no_sub_command = command
-
-  command = command:gsub("$fileNameWithoutExt", vim.fn.fnamemodify(path, ":t:r"))
-  command = command:gsub("$fileName", vim.fn.fnamemodify(path, ":t"))
-  command = command:gsub("$file", path)
-  command = command:gsub("$dir", vim.fn.fnamemodify(path, ":p:h"))
-  command = command:gsub("$end", "")
-
-  if command == no_sub_command then
-    command = command .. " " .. path
-  end
-
-  return command
-end
-
 -- Check if current buffer is in project
 -- if a project return table of project
 ---@return table?
@@ -59,7 +27,7 @@ local function getCommand(filetype, path, user_argument)
   path = path or vim.fn.expand("%:p")
   local command = opt.filetype[filetype]
   if command then
-    local command_vim = replaceVars(command, path, user_argument)
+    local command_vim = vim.fn.expandcmd(command)
     return command_vim
   end
 end
@@ -72,7 +40,7 @@ local function getProjectCommand(context)
   if context.file_name then
     local file = context.path .. "/" .. context.file_name
     if context.command then
-      command = replaceVars(context.command, file)
+      command = vim.fn.expandcmd(context.command)
     else
       -- Plenary version:
       -- https://github.com/CRAG666/code_runner.nvim/commit/825a0d5a450e269b450016b2a390026c68af3588
