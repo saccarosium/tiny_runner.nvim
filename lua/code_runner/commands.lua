@@ -94,21 +94,6 @@ local function execute(command, bufname, prefix)
   end
 end
 
-btm_number = o.get().better_term.init
-local function betterTermM(command)
-  local opt = o.get().better_term
-  local betterTerm_ok, betterTerm = pcall(require, "betterTerm")
-  if betterTerm_ok then
-    if opt.number == nil then
-      btm_number = btm_number + 1
-    else
-      btm_number = opt.number
-    end
-    local cmd = "cd " .. vim.fn.fnamemodify(path, ":p:h") .. " && " .. command
-    betterTerm.send(cmd, btm_number, { clean = opt.clean })
-  end
-end
-
 local M = {}
 
 -- Valid modes
@@ -122,13 +107,6 @@ M.modes = {
   float = function(command, ...)
     local window = require("code_runner.floats")
     window.floating(command)
-  end,
-  better_term = function(command, ...)
-    betterTermM(command)
-  end,
-  toggleterm = function(command, ...)
-    local tcmd = string.format('TermExec cmd="%s"', command)
-    vim.cmd(tcmd)
   end,
 }
 --- Run according to a mode
