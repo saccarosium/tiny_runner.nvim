@@ -1,4 +1,3 @@
-
 # Created by https://www.toptal.com/developers/gitignore/api/python,lua
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,lua
 
@@ -191,11 +190,6 @@ Thumbs.db
 
 # profiling data
 .prof
-
-code_runner.json
-project_manager.json
-
-# End of https://www.toptal.com/developers/gitignore/api/python,lua
 
 # for vim tags
 doc/tags
