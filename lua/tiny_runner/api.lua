@@ -1,5 +1,6 @@
-local o = require("code_runner.options")
-local m = require("code_runner.modes")
+local o = require("tiny_runner.options")
+local m = require("tiny_runner.modes")
+local u = require("tiny_runner.utils")
 local M = {}
 
 local modes = {
@@ -8,6 +9,16 @@ local modes = {
     float = m.float,
     command = m.command,
 }
+
+---@return table?
+function M.options_get()
+    return o.get()
+end
+
+---@param options table
+function M.options_set(options)
+    o.set(options)
+end
 
 ---@param mode table
 function M.mode_register(mode)
@@ -26,16 +37,16 @@ end
 function M.project_get_current()
     local projects = o.get().projects
     if vim.tbl_isempty(projects) then
-        error("Doesn't seem you have any project defined")
+        u.error("Doesn't seem you have any project defined")
         return
     end
     local paths = vim.tbl_keys(projects)
     local cwd = vim.loop.cwd()
-    local project = nil
+    local project = {}
     for _, path in ipairs(paths) do
         if cwd == vim.fn.expand(path) then
             project = projects[path]
-            project.path = path
+            project.name = project.name or cwd
             project.command = vim.fn.expandcmd(project.command)
             return project
         end
@@ -48,15 +59,14 @@ function M.project_get(path)
     local projects = o.get().projects
     local project = nil
     if vim.tbl_isempty(projects) then
-        error("Doesn't seem you have any project defined")
+        u.error("Doesn't seem you have any project defined")
         return
     end
     project = projects[path]
     if not project then
-        error("Didn't found any project associated with this path")
+        u.error("Didn't found any project associated with this path")
         return
     end
-    project.path = path
     project.command = vim.fn.expandcmd(project.command)
     return project
 end

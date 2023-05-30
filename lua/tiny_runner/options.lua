@@ -4,7 +4,7 @@ local opt = {
     startinsert = true,
     term = {
         position = "bot",
-        size = 15,
+        size = 20,
     },
     float = {
         -- Window border (see ':h nvim_open_win')
@@ -15,17 +15,14 @@ local opt = {
         -- Transparency (see ':h winblend')
         blend = 0,
     },
-    before_run_filetype = function()
-        vim.cmd(":w")
-    end,
     filetypes = {
         javascript = "node",
-        java = "javac % && java %:t:r",
+        java = "javac % && java %<",
         c = "gcc % && %:h/a.out",
         cpp = "g++ % && %:h/a.out",
         python = "python -u",
         sh = "bash",
-        rust = "rustc % && %:p:r",
+        rust = "rustc % && %<",
         lua = ":luafile %",
         vim = ":source %",
     },

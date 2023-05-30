@@ -3,7 +3,7 @@ local M = {}
 ---@param name string
 function M.buffer_rename(name)
     if vim.fn.empty(name) ~= 1 then
-        vim.cmd("file " .. name)
+        vim.cmd("file trunner_" .. name)
     end
 end
 
@@ -21,7 +21,7 @@ end
 
 ---@param msg string
 function M.error(msg)
-    vim.notify("CODE RUNNER: " .. msg, vim.log.levels.ERROR)
+    vim.notify("TINY RUNNER: " .. msg, vim.log.levels.ERROR)
 end
 
 return M
