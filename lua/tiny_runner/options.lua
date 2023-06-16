@@ -16,17 +16,21 @@ local opt = {
         blend = 0,
     },
     filetypes = {
-        javascript = "node",
-        java = "javac % && java %<",
-        c = "gcc % && %:h/a.out",
-        cpp = "g++ % && %:h/a.out",
-        python = "python -u",
-        sh = "bash",
+        c = "gcc --std=c17 -g -Wall % && %:h/a.out",
+        cpp = "g++ --std=c++17 -g -Wall % && %:h/a.out",
+        python = "python -u %",
+        sh = "bash %",
         rust = "rustc % && %<",
         lua = ":luafile %",
         vim = ":source %",
     },
-    projects = {},
+    projects = {
+        ["~/Repos/github.com/saccarosium/pel_json_parser"] = {
+            name = "json parser",
+            command = "make test",
+            mode = "tab"
+        },
+    }
 }
 
 local M = {}
